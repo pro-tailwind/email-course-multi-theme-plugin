@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin')
+const colors = require('tailwindcss/colors')
 const Color = require('color')
 
 // Convert HEX color to `R, G, B`
@@ -16,48 +17,48 @@ function withOpacityValue(variable) {
   }
 }
 
+const themes = [
+  {
+    name: 'default',
+    colors: {
+      'text-base': colors.fuchsia['800'],
+      'text-inverted': colors.fuchsia['100'],
+      'bg-base': colors.fuchsia['100'],
+      'bg-inverted': colors.fuchsia['800'],
+    },
+  },
+  {
+    name: 'swiss',
+    colors: {
+      'text-base': colors.red['800'],
+      'text-inverted': colors.red['100'],
+      'bg-base': colors.red['100'],
+      'bg-inverted': colors.red['800'],
+    },
+  },
+  {
+    name: 'forest',
+    colors: {
+      'text-base': colors.green['800'],
+      'text-inverted': colors.green['100'],
+      'bg-base': colors.green['100'],
+      'bg-inverted': colors.green['800'],
+    },
+  },
+  {
+    name: 'aqua',
+    colors: {
+      'text-base': colors.cyan['800'],
+      'text-inverted': colors.cyan['100'],
+      'bg-base': colors.cyan['100'],
+      'bg-inverted': colors.cyan['800'],
+    },
+  },
+]
+
 // Create the plugin
 const multiThemePlugin = plugin(
-  function ({ addBase, addVariant, theme }) {
-    const themes = [
-      {
-        name: 'default',
-        colors: {
-          'text-base': theme('colors.fuchsia.800'),
-          'text-inverted': theme('colors.fuchsia.100'),
-          'bg-base': theme('colors.fuchsia.100'),
-          'bg-inverted': theme('colors.fuchsia.800'),
-        },
-      },
-      {
-        name: 'swiss',
-        colors: {
-          'text-base': theme('colors.red.800'),
-          'text-inverted': theme('colors.red.100'),
-          'bg-base': theme('colors.red.100'),
-          'bg-inverted': theme('colors.red.800'),
-        },
-      },
-      {
-        name: 'forest',
-        colors: {
-          'text-base': theme('colors.green.800'),
-          'text-inverted': theme('colors.green.100'),
-          'bg-base': theme('colors.green.100'),
-          'bg-inverted': theme('colors.green.800'),
-        },
-      },
-      {
-        name: 'aqua',
-        colors: {
-          'text-base': theme('colors.cyan.800'),
-          'text-inverted': theme('colors.cyan.100'),
-          'bg-base': theme('colors.cyan.100'),
-          'bg-inverted': theme('colors.cyan.800'),
-        },
-      },
-    ]
-
+  function ({ addBase, addVariant }) {
     // Add `:root` scope CSS variables (set to default theme)
     const defaultColors = themes[0].colors
     addBase({
