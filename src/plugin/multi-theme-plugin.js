@@ -2,12 +2,18 @@ const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 const Color = require('color')
 
-// Convert HEX color to `R, G, B`
+// -----------------------------------------------------------------
+// Get RGB channels for a given color
+// -----------------------------------------------------------------
+
 function getRgbChannels(color) {
-  return Color(color).rgb().color.join(', ')
+  return Color(color).rgb().array().join(', ')
 }
 
+// -----------------------------------------------------------------
 // Compose Tailwind's `opacityValue` into the alpha channel
+// -----------------------------------------------------------------
+
 function withOpacityValue(variable) {
   return function ({ opacityValue }) {
     if (opacityValue !== undefined) {
@@ -16,6 +22,10 @@ function withOpacityValue(variable) {
     return `rgb(${variable})`
   }
 }
+
+// -----------------------------------------------------------------
+// Themes definition
+// -----------------------------------------------------------------
 
 const themes = [
   {
@@ -56,10 +66,16 @@ const themes = [
   },
 ]
 
-// Create the plugin
-const multiThemePlugin = plugin(
+// -----------------------------------------------------------------
+// Tailwind CSS plugin
+// -----------------------------------------------------------------
+
+module.exports = plugin(
   function ({ addBase, addVariant }) {
-    // Add `:root` scope CSS variables (set to default theme)
+    // -----------------------------------------------------------------
+    // Root scope CSS variables
+    // -----------------------------------------------------------------
+
     const defaultColors = themes[0].colors
     addBase({
       ':root': {
@@ -70,7 +86,10 @@ const multiThemePlugin = plugin(
       },
     })
 
-    // Redefine the CSS variables for each theme scope
+    // -----------------------------------------------------------------
+    // Redefine CSS variables for each theme
+    // -----------------------------------------------------------------
+
     themes.forEach((theme) => {
       const { colors } = theme
       addBase({
@@ -83,30 +102,35 @@ const multiThemePlugin = plugin(
       })
     })
 
+    // -----------------------------------------------------------------
     // BONUS: Add theme-specific variant for bespoke theming overrides
+    // -----------------------------------------------------------------
+
     themes.forEach((theme) => {
       addVariant(`theme-${theme.name}`, `[data-theme=${theme.name}] &`)
     })
   },
+
+  // -----------------------------------------------------------------
   // Add semantic color names to Tailwind's color palette
+  // -----------------------------------------------------------------
+
   {
     theme: {
       extend: {
         textColor: {
           multi: {
-            'text-base': withOpacityValue('--color-text-base'),
-            'text-inverted': withOpacityValue('--color-text-inverted'),
+            base: withOpacityValue('--color-text-base'),
+            inverted: withOpacityValue('--color-text-inverted'),
           },
         },
         backgroundColor: {
           multi: {
-            'bg-base': withOpacityValue('--color-bg-base'),
-            'bg-inverted': withOpacityValue('--color-bg-inverted'),
+            base: withOpacityValue('--color-bg-base'),
+            inverted: withOpacityValue('--color-bg-inverted'),
           },
         },
       },
     },
   }
 )
-
-module.exports = multiThemePlugin

@@ -1,7 +1,7 @@
 module.exports = {
-  content: ['./public/**/*.html'],
+  content: ['./src/**/*.{jsx,js}'],
   theme: {
     extend: {},
   },
-  plugins: [require('./src/multi-theme-plugin')],
+  plugins: [require('./src/plugin/multi-theme-plugin')],
 }
