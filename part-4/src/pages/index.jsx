@@ -1,7 +1,5 @@
 import { useState } from 'react'
 
-import { themesList } from '../plugin/multi-theme-plugin'
-
 export default function Homepage() {
   const [activeTheme, setActiveTheme] = useState('default')
   const themesList = ['default', 'swiss', 'forest', 'aqua']
@@ -15,9 +13,9 @@ export default function Homepage() {
           {themesList.map((theme) => (
             <button
               key={theme}
-              data-theme={theme}
-              className="bg-multi-base hover:bg-multi-base/75 text-multi-base rounded px-5 py-2 font-medium shadow"
               onClick={() => setActiveTheme(theme)}
+              data-theme={theme}
+              className="rounded bg-multi-base px-5 py-2 font-medium text-multi-base shadow hover:bg-multi-base/75"
             >
               {theme}
             </button>
@@ -25,16 +23,16 @@ export default function Homepage() {
         </div>
 
         <p className="mt-4 text-gray-500">
-          Current theme: <span className="text-multi-base font-medium">{activeTheme}</span>
+          Current theme: <span className="font-medium text-multi-base">{activeTheme}</span>
         </p>
 
         <div className="mt-8 grid grid-cols-2 gap-4">
-          <div className="bg-multi-base rounded-xl p-8 shadow-xl">
+          <div className="rounded-xl bg-multi-base p-8 shadow-xl">
             <p className="text-multi-base">
               <strong>Base</strong> text and background colors.
             </p>
           </div>
-          <div className="bg-multi-inverted rounded-xl p-8 shadow-xl">
+          <div className="rounded-xl bg-multi-inverted p-8 shadow-xl transition hover:md:theme-aqua:-rotate-6">
             <p className="text-multi-inverted">
               <strong>Inverted</strong> text and background colors.
             </p>
