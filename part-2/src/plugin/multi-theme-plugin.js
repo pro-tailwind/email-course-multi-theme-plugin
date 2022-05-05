@@ -1,27 +1,5 @@
 const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
-const Color = require('color')
-
-// -----------------------------------------------------------------
-// Get RGB channels for a given color
-// -----------------------------------------------------------------
-
-function getRgbChannels(color) {
-  return Color(color).rgb().array().join(', ')
-}
-
-// -----------------------------------------------------------------
-// Compose Tailwind's `opacityValue` into the alpha channel
-// -----------------------------------------------------------------
-
-function withOpacityValue(variable) {
-  return function ({ opacityValue }) {
-    if (opacityValue !== undefined) {
-      return `rgba(var(${variable}), ${opacityValue})`
-    }
-    return `rgb(${variable})`
-  }
-}
 
 // -----------------------------------------------------------------
 // Themes definition
@@ -71,7 +49,7 @@ const themes = [
 // -----------------------------------------------------------------
 
 module.exports = plugin(
-  function ({ addBase, addVariant }) {
+  function ({ addBase }) {
     // -----------------------------------------------------------------
     // Root scope CSS variables
     // -----------------------------------------------------------------
@@ -79,10 +57,10 @@ module.exports = plugin(
     const defaultColors = themes[0].colors
     addBase({
       ':root': {
-        '--color-text-base': getRgbChannels(defaultColors['text-base']),
-        '--color-text-inverted': getRgbChannels(defaultColors['text-inverted']),
-        '--color-bg-base': getRgbChannels(defaultColors['bg-base']),
-        '--color-bg-inverted': getRgbChannels(defaultColors['bg-inverted']),
+        '--color-text-base': defaultColors['text-base'],
+        '--color-text-inverted': defaultColors['text-inverted'],
+        '--color-bg-base': defaultColors['bg-base'],
+        '--color-bg-inverted': defaultColors['bg-inverted'],
       },
     })
 
@@ -93,21 +71,13 @@ module.exports = plugin(
     themes.forEach((theme) => {
       const { colors, name } = theme
       addBase({
-        [`[data-theme=${name}]`]: {
-          '--color-text-base': getRgbChannels(colors['text-base']),
-          '--color-text-inverted': getRgbChannels(colors['text-inverted']),
-          '--color-bg-base': getRgbChannels(colors['bg-base']),
-          '--color-bg-inverted': getRgbChannels(colors['bg-inverted']),
+        [`[data-theme="${name}"]`]: {
+          '--color-text-base': colors['text-base'],
+          '--color-text-inverted': colors['text-inverted'],
+          '--color-bg-base': colors['bg-base'],
+          '--color-bg-inverted': colors['bg-inverted'],
         },
       })
-    })
-
-    // -----------------------------------------------------------------
-    // BONUS: Add theme-specific variant for bespoke theming overrides
-    // -----------------------------------------------------------------
-
-    themes.forEach((theme) => {
-      addVariant(`theme-${theme.name}`, `[data-theme=${theme.name}] &`)
     })
   },
 
@@ -120,14 +90,23 @@ module.exports = plugin(
       extend: {
         textColor: {
           multi: {
-            base: withOpacityValue('--color-text-base'),
-            inverted: withOpacityValue('--color-text-inverted'),
+            base: 'var(--color-text-base)',
+            inverted: 'var(--color-text-inverted)',
+
+            /**
+             * ## Challenge: Compose the color's R G B channels with Tailwind's `opacityValue`
+             *
+             * See the example below this comment to get you started
+             */
+            example: ({ opacityValue }) => {
+              // Good luck!
+            },
           },
         },
         backgroundColor: {
           multi: {
-            base: withOpacityValue('--color-bg-base'),
-            inverted: withOpacityValue('--color-bg-inverted'),
+            base: 'var(--color-bg-base)',
+            inverted: 'var(--color-bg-inverted)',
           },
         },
       },
