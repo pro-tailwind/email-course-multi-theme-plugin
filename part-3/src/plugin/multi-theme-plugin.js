@@ -71,7 +71,7 @@ const themes = [
 // -----------------------------------------------------------------
 
 module.exports = plugin(
-  function ({ addBase, addVariant }) {
+  function ({ addBase }) {
     // -----------------------------------------------------------------
     // Root scope CSS variables
     // -----------------------------------------------------------------
@@ -93,21 +93,13 @@ module.exports = plugin(
     themes.forEach((theme) => {
       const { colors, name } = theme
       addBase({
-        [`[data-theme=${name}]`]: {
+        [`[data-theme="${name}"]`]: {
           '--color-text-base': getRgbChannels(colors['text-base']),
           '--color-text-inverted': getRgbChannels(colors['text-inverted']),
           '--color-bg-base': getRgbChannels(colors['bg-base']),
           '--color-bg-inverted': getRgbChannels(colors['bg-inverted']),
         },
       })
-    })
-
-    // -----------------------------------------------------------------
-    // BONUS: Add theme-specific variant for bespoke theming overrides
-    // -----------------------------------------------------------------
-
-    themes.forEach((theme) => {
-      addVariant(`theme-${theme.name}`, `[data-theme=${theme.name}] &`)
     })
   },
 
