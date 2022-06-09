@@ -90,17 +90,9 @@ module.exports = plugin(
       extend: {
         textColor: {
           multi: {
+            // Challenge: compose the color's R G B channels with Tailwind's `<alpha-value>`. Good luck!
             base: 'var(--color-text-base)',
             inverted: 'var(--color-text-inverted)',
-
-            /**
-             * ## Challenge: Compose the color's R G B channels with Tailwind's `opacityValue`
-             *
-             * See the example below this comment to get you started
-             */
-            example: ({ opacityValue }) => {
-              // Good luck!
-            },
           },
         },
         backgroundColor: {
