@@ -8,6 +8,6 @@
     "color": "^4.2.3",
     "concurrently": "^7.1.0",
     "live-server": "^1.2.2",
-    "tailwindcss": "^3.0.24"
+    "tailwindcss": "^3.1.1"
   }
 }
