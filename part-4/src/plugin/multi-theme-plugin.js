@@ -11,19 +11,6 @@ function getRgbChannels(color) {
 }
 
 // -----------------------------------------------------------------
-// Compose Tailwind's `opacityValue` into the alpha channel
-// -----------------------------------------------------------------
-
-function withOpacityValue(variable) {
-  return function ({ opacityValue }) {
-    if (opacityValue !== undefined) {
-      return `rgb(var(${variable}) / ${opacityValue})`
-    }
-    return `rgb(var(${variable}))`
-  }
-}
-
-// -----------------------------------------------------------------
 // Themes definition
 // -----------------------------------------------------------------
 
@@ -120,14 +107,14 @@ module.exports = plugin(
       extend: {
         textColor: {
           multi: {
-            base: withOpacityValue('--color-text-base'),
-            inverted: withOpacityValue('--color-text-inverted'),
+            base: 'rgb(var(--color-text-base) / <alpha-value>)',
+            inverted: 'rgb(var(--color-text-inverted) / <alpha-value>)',
           },
         },
         backgroundColor: {
           multi: {
-            base: withOpacityValue('--color-bg-base'),
-            inverted: withOpacityValue('--color-bg-inverted'),
+            base: 'rgb(var(--color-bg-base) / <alpha-value>)',
+            inverted: 'rgb(var(--color-bg-inverted) / <alpha-value>)',
           },
         },
       },
